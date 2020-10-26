@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#88FFE502"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_height="159dp"
+        app:srcCompat="@drawable/icon_diary_login_v2" />
+
+    <EditText
+        android:id="@+id/InputEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:ems="10"
+        android:paddingStart="@dimen/padding_login_left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:paddingTop="@dimen/padding_login_up"
+        android:hint="@string/hint_email"
+        android:inputType="textEmailAddress"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/InputPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:paddingStart="@dimen/padding_login_left"
+        android:paddingTop="@dimen/padding_login_up"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        tools:ignore="RtlSymmetry" />
+
+    <Button
+        android:id="@+id/AuthUser"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="30dp"
+        android:onClick="on_Sign_Button_clicked"
+        android:text="@string/action_sign_in_login"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:id="@+id/RegisterUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:onClick="on_Register_Button_clicked"
+        android:text="@string/action_register_button"
+        android:textSize="25sp"
+        tools:ignore="RtlSymmetry" />
+</LinearLayout>

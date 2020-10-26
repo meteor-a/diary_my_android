@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">Заметки</string>
+    <string name="title_activity_login">Войти</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_name">Username</string>
+    <string name="action_sign_in">Войдите</string>
+    <string name="action_sign_in_login">Войти</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="action_register">"Зарегестрируйтесь"</string>
+    <string name="action_register_button">"Зарегестрироваться"</string>
+    <string name="save_user_data">"Запомнить меня"</string>
+    <string name="hint_name">"Username"</string>
+    <string name="hint_email">"e-mail"</string>
+    <string name="hint_password">"Пароль"</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+
+    <string name="hint_topic">Заголовок</string>
+    <string name="hint_note">Текст</string>
+    <string name="hint_search">Поиск заметки</string>
+
+    <string name="title_save">Сохранить</string>
+    <string name="error_empty_topic">Введите тему</string>
+    <string name="error_empty_note">Введите текст заметки</string>
+    <string name="dialog_delete_note_no">Нет</string>
+    <string name="dialog_delete_note_yes">Да</string>
+    <string name="dialog_delete_note_verification">Вы уверены, что хотите удалить заметку?</string>
+    <string name="dialog_delete_note_title">Удалить заметку</string>
+
+    <string name="dialog_save_note_title">Сохранить</string>
+    <string name="dialog_save_note_yes">Да</string>
+    <string name="dialog_save_note_no">Нет</string>
+    <string name="dialog_save_note_verification">Сохранить заметку?</string>
+
+    <string name="dialog_sort_notes_title">Сортировать:</string>
+
+    <string-array name="item_sort_notes">
+        <item>В алфавитном порядке</item>
+        <item>По дате создания/изменения(сначало старые)</item>
+        <item>По дате создания/изменения(сначало новые)</item>
+    </string-array>
+
+    <string-array name="item_sort_tasks">
+        <item>В алфавитном порядке</item>
+        <item>По дате создания/изменения(сначало старые)</item>
+        <item>По дате создания/изменения(сначало новые)</item>
+    </string-array>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="dialog_correct_title">Проверьте данные</string>
+    <string name="dialog_correct_okey">Ок</string>
+    <string name="dialog_save_task_no">Нет</string>
+    <string name="dialog_save_task_yes">Да</string>
+</resources>
