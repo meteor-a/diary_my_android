@@ -5,4 +5,12 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorTextPrimary">#DD000000</color>
     <color name="colorTextSecondary">#89000000</color>
+
+    <color name="dismiss_activity_textcolor">#ffffff</color>
+    <color name="dismiss_activity_background">#000000</color>
+    <color name="main_textcolor">#777777</color>
+    <color name="main_background">#ffffff</color>
+    <color name="main_disabled_textcolor">#aaaaaa</color>
+
+    <color name="primary">#b62020</color>
 </resources>

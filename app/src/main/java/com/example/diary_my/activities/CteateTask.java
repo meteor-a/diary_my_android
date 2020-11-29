@@ -9,14 +9,18 @@ import androidx.fragment.app.DialogFragment;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,20 +28,17 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.example.diary_my.CreateAlarmManager;
 import com.example.diary_my.R;
+import com.example.diary_my.TimerManager;
 import com.example.diary_my.db.Contact_Database;
 import com.example.diary_my.db.DBHelper;
 import com.example.diary_my.dialogs.Dialog_save_note;
 import com.example.diary_my.helper.SharedPrefManager;
-import com.example.diary_my.helper.SyncCreateNote;
 import com.example.diary_my.helper.SyncCreateTimeManager;
-import com.example.diary_my.helper.SyncUpdateNote;
 import com.example.diary_my.helper.SyncUpdateTask;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -61,17 +62,20 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
     private EditText inputTask;
     private EditText inputDescription;
     private TextInputLayout taskLayout;
-    private TextInputLayout descriptionLayout;
     public static final String EXTRA_TASK_ID = "task_id";
     private long taskId;
     Calendar selectedDate;
-    CreateAlarmManager alarm;
+
+    final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 45;
+    public  static  TimerManager timerManager;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cteate_task);
+
+        timerManager = new TimerManager(this);
 
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -93,9 +97,7 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
         inputTask = findViewById(R.id.TaskEditText);
         inputDescription = findViewById(R.id.DescriptionEditText);
         taskLayout = findViewById(R.id.TextLayoutTask);
-        descriptionLayout = findViewById(R.id.DescriptionLayout);
         setTime.setOnClickListener(this);
-        alarm = new CreateAlarmManager(getApplicationContext());
 
         selectedDate = Calendar.getInstance();
 
@@ -264,20 +266,16 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
             contentValues.put(Contact_Database.Tasks.COMPLETE, 0);
             contentValues.put(Contact_Database.Tasks.ALARM, 0);
 
-
             if (taskId == -1) {
                 getContentResolver().insert(Contact_Database.Tasks.URI, contentValues);
-                alarm.create_alarm();
                 SyncCreateTimeManager synctask = new SyncCreateTimeManager(this, task, description, formattedDate, formattedDate, time_notification, 0, user_id);
                 synctask.sync_new_task();
 
-                finish();
             } else {
                 getContentResolver().update(ContentUris.withAppendedId(Contact_Database.Tasks.URI, taskId),
                         contentValues,
                         null,
                         null);
-                alarm.create_alarm();
                 DBHelper dbHelper = new DBHelper(this);
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -290,8 +288,37 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
                 SyncUpdateTask sync = new SyncUpdateTask(this, task, description, cursor.getString(Create_tsColumn), cursor.getString(Update_tsColumn), cursor.getString(notificationColumn), 0, user_id, taskId);
                 sync.sync_task_update();
 
-                finish();
             }
+            checkNotificationPolicy();
+            checkOverlayPermission();
+            timerManager.SetAlarmTimer();
+
+            finish();
+        }
+    }
+
+    private void checkNotificationPolicy() {
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+            Intent intent = new Intent(
+                    android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * needed for Android Q: on some devices activity doesn't show from fullScreenNotification without
+     * permission SYSTEM_ALERT_WINDOW
+     */
+    private void checkOverlayPermission() {
+        if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.P) && (!Settings.canDrawOverlays(this))) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + this.getPackageName()));
+            startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
         }
     }
 

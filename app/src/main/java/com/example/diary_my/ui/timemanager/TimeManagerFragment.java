@@ -37,19 +37,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.diary_my.RetrofitApi.APIService;
 import com.example.diary_my.RetrofitApi.APIUrl;
+import com.example.diary_my.TimerManager;
 import com.example.diary_my.activities.BrowsingTask;
-import com.example.diary_my.CreateAlarmManager;
 import com.example.diary_my.activities.CteateTask;
 import com.example.diary_my.R;
 import com.example.diary_my.activities.HomeActivity;
 import com.example.diary_my.db.Contact_Database;
 import com.example.diary_my.db.DBHelper;
-import com.example.diary_my.dialogs.Dialog_sort_notes;
 import com.example.diary_my.dialogs.Dialog_sort_task;
 import com.example.diary_my.helper.SharedPrefManager;
 import com.example.diary_my.helper.SyncTasks;
 import com.example.diary_my.models.Result;
-import com.example.diary_my.models.Result_notes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,7 +67,6 @@ public class TimeManagerFragment extends Fragment implements SwipeRefreshLayout.
     FloatingActionButton Add_task;
     private SwipeRefreshLayout mSwipeRefreshLayout_timemanager;
     private TimeManagerAdapter tasksadapter;
-    private CreateAlarmManager alarm;
     private FragmentActivity myContext;
 
     private SearchView searchView = null;
@@ -78,6 +75,7 @@ public class TimeManagerFragment extends Fragment implements SwipeRefreshLayout.
     private String SELECTION_SEARCH = null;
     public String SELECTION_ARGS_SEARCH = null;
 
+    public TimerManager timerManager;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -85,14 +83,13 @@ public class TimeManagerFragment extends Fragment implements SwipeRefreshLayout.
 
         View root = inflater.inflate(R.layout.fragment_timemanager, container, false);
 
+        timerManager = new TimerManager(getContext());
         RecyclerView recyclerView = root.findViewById(R.id.tasks_rv_timemanager);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-        alarm = new CreateAlarmManager(getContext());
 
         Add_task = root.findViewById(R.id.add_task_timemanager);
         Add_task.setOnClickListener(new View.OnClickListener()
@@ -225,7 +222,8 @@ public class TimeManagerFragment extends Fragment implements SwipeRefreshLayout.
                     null);
 
             db.close();
-            alarm.create_alarm();
+
+            timerManager.SetAlarmTimer();
 
             SyncCheckedTask(taskId, flag_checked);
         }

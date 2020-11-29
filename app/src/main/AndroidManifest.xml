@@ -9,6 +9,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -27,45 +31,47 @@
         </activity>
 
 
-        <service
-            android:name=".Service_alarm_timemanager"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity
             android:name=".activities.BrowsingTask"
             android:label="Задача"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.CteateTask"
             android:label="Создать задачу"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.LoginActivity"
             android:label="Авторизация"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.RegisterActivity"
             android:label="Регистрация"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.CreateNote"
             android:label="Создать заметку"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.BrowsingNote"
             android:label="Заметка"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
@@ -76,14 +82,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activities.RingActivity"
+            android:name=".DismissAlarmActivity"
+            android:label="Звонок"
             android:screenOrientation="portrait"
-            android:showOnLockScreen="true">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name=".db.Provider_Notes"
@@ -91,11 +95,9 @@
             android:exported="false" />
 
         <receiver
-            android:name=".Receiver.AlertReceiver"
-            android:enabled="true" />
-        <receiver
-            android:name=".Receiver.ServiceReceiverOff"
-            android:enabled="true" />
+            android:name="com.example.diary_my.Receiver.AlarmBroadcastReceiver" >
+        </receiver>
     </application>
+
 
 </manifest>
