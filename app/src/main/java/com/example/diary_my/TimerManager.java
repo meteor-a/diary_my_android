@@ -2,21 +2,37 @@ package com.example.diary_my;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.diary_my.Receiver.AlarmBroadcastReceiver;
+import com.example.diary_my.RetrofitApi.APIService;
+import com.example.diary_my.RetrofitApi.APIUrl;
 import com.example.diary_my.db.Contact_Database;
 import com.example.diary_my.db.DBHelper;
+import com.example.diary_my.helper.SharedPrefManager;
 import com.example.diary_my.helper.SharedPreferencesHelper;
+import com.example.diary_my.models.Result;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.diary_my.Receiver.AlarmBroadcastReceiver.KEY_IS_ONE_TIME;
 
@@ -36,11 +52,70 @@ public class TimerManager {
         this.sharPrefHelper = new SharedPreferencesHelper(context);
     }
 
+    public void SyncCheckedTask(long taskId, int flag_checked) {
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query_rows = "SELECT " + Contact_Database.Tasks.CREATE_TS_COLUMN  + ", " + Contact_Database.Tasks.UPDATED_TS_COLUMN + " FROM " + Contact_Database.Tasks.TABLE_NAME + " WHERE " + Contact_Database.Tasks._ID + " = " + taskId;
+        Cursor c = db.rawQuery(query_rows, null);
+        c.moveToFirst();
+        int CreatedColumn = c.getColumnIndex(Contact_Database.Tasks.CREATE_TS_COLUMN);
+        int UpdatedColumn = c.getColumnIndex(Contact_Database.Tasks.UPDATED_TS_COLUMN);
+        String created_ts_task_by_id = c.getString(CreatedColumn);
+        String updated_ts_task_by_id = c.getString(UpdatedColumn);
+        db.close();
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit_server = new Retrofit.Builder()
+                .baseUrl(APIUrl.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        long user_id = SharedPrefManager.getInstance(context).getUser().getId();
+
+        APIService service_server = retrofit_server.create(APIService.class);
+        Call call_server = service_server.SyncTaskChecked(user_id, created_ts_task_by_id, updated_ts_task_by_id, flag_checked);
+
+        call_server.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
+                assert response.body() != null;
+                if (response.body().getError() == false) {
+                    ContentValues contentValues = new ContentValues();
+                    DBHelper dbHelper = new DBHelper(context);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                    contentValues.put(Contact_Database.Tasks.SYNCHRONIZED, 1);
+                    context.getContentResolver().update(ContentUris.withAppendedId(Contact_Database.Tasks.URI, taskId),
+                            contentValues,
+                            null,
+                            null);
+
+                    db.close();
+                }
+            }
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Log.i("error", t.getMessage());
+            }
+        });
+    }
+
     public void SetCompleteTask() {
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String update_rows = "UPDATE " + Contact_Database.Tasks.TABLE_NAME + " SET " + Contact_Database.Tasks.COMPLETE + " = 1" + " WHERE " + Contact_Database.Tasks.ALARM + " = 1";
         db.execSQL(update_rows);
+
+        String query_rows = "SELECT " + Contact_Database.Tasks._ID + " FROM " + Contact_Database.Tasks.TABLE_NAME  + " WHERE " + Contact_Database.Tasks.ALARM + " = 1";
+        Cursor cursor = db.rawQuery(query_rows, null);
+
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(Contact_Database.Tasks._ID);
+            SyncCheckedTask(cursor.getLong(column_index), 1);
+        }
     }
 
     public void SetAlarmTimer() {

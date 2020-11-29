@@ -1,5 +1,8 @@
 package com.example.diary_my;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,15 +12,29 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextClock;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.diary_my.RetrofitApi.APIService;
+import com.example.diary_my.RetrofitApi.APIUrl;
 import com.example.diary_my.activities.CteateTask;
+import com.example.diary_my.db.Contact_Database;
 import com.example.diary_my.db.DBHelper;
 import com.example.diary_my.helper.DismissAlarmNotificationController;
+import com.example.diary_my.helper.SharedPrefManager;
 import com.example.diary_my.helper.SharedPreferencesHelper;
 import com.example.diary_my.models.AlarmParams;
+import com.example.diary_my.models.Result;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 

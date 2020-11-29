@@ -223,62 +223,10 @@ public class TimeManagerFragment extends Fragment implements SwipeRefreshLayout.
 
             db.close();
 
+            timerManager.SyncCheckedTask(taskId, flag_checked);
             timerManager.SetAlarmTimer();
-
-            SyncCheckedTask(taskId, flag_checked);
         }
     };
-
-    private void SyncCheckedTask(long taskId, int flag_checked) {
-        DBHelper dbHelper = new DBHelper(getContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query_rows = "SELECT " + Contact_Database.Tasks.CREATE_TS_COLUMN  + ", " + Contact_Database.Tasks.UPDATED_TS_COLUMN + " FROM " + Contact_Database.Tasks.TABLE_NAME + " WHERE " + Contact_Database.Tasks._ID + " = " + taskId;
-        Cursor c = db.rawQuery(query_rows, null);
-        c.moveToFirst();
-        int CreatedColumn = c.getColumnIndex(Contact_Database.Tasks.CREATE_TS_COLUMN);
-        int UpdatedColumn = c.getColumnIndex(Contact_Database.Tasks.UPDATED_TS_COLUMN);
-        String created_ts_task_by_id = c.getString(CreatedColumn);
-        String updated_ts_task_by_id = c.getString(UpdatedColumn);
-        db.close();
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit_server = new Retrofit.Builder()
-                .baseUrl(APIUrl.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        long user_id = SharedPrefManager.getInstance(getContext()).getUser().getId();
-
-        APIService service_server = retrofit_server.create(APIService.class);
-        Call call_server = service_server.SyncTaskChecked(user_id, created_ts_task_by_id, updated_ts_task_by_id, flag_checked);
-
-        call_server.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
-                assert response.body() != null;
-                if (response.body().getError() == false) {
-                    ContentValues contentValues = new ContentValues();
-                    DBHelper dbHelper = new DBHelper(getContext());
-                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-                    contentValues.put(Contact_Database.Tasks.SYNCHRONIZED, 1);
-                    getActivity().getContentResolver().update(ContentUris.withAppendedId(Contact_Database.Tasks.URI, taskId),
-                            contentValues,
-                            null,
-                            null);
-
-                    db.close();
-                }
-            }
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Log.i("error", t.getMessage());
-            }
-        });
-    }
 
     @Override
     public void onRefresh() {
