@@ -25,7 +25,7 @@ public class HttpUtils {
         try {
             URL url = new URL(urlStr);
             Map<String,Object> params = new LinkedHashMap<>();
-            params.put("ver_code", 2);
+            params.put("ver_code", 5);
             params.put("api", String.valueOf(Build.VERSION.SDK_INT));
             StringBuilder postData = new StringBuilder();
             for (Map.Entry<String,Object> param : params.entrySet()) {

@@ -24,11 +24,13 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        UpdateChecker.checkForDialog(MainActivity.this);
+
 
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(this, HomeActivity.class));
+        } else {
+            UpdateChecker.checkForDialog(MainActivity.this);
         }
     }
 

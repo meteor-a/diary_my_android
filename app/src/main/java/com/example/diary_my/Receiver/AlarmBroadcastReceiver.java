@@ -29,6 +29,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             dismissAlarmNotificationController.showNotification();
         } else {
             Intent dismissAlarmIntent = new Intent(context, DismissAlarmActivity.class);
+            dismissAlarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(dismissAlarmIntent);
         }
     }

@@ -6,16 +6,12 @@ import android.content.Intent;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-/**
- * This notification is used for displaying DissmissAlarmActivity because of Android Q limitations.
- */
 public class DismissAlarmNotificationController {
 
-    private NotificationManager notificationManager;
-    private Context context;
+    private final Context context;
 
     public DismissAlarmNotificationController(Context context) {
-        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         this.context = context;
     }
 

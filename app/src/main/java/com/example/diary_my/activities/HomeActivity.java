@@ -95,7 +95,7 @@ public class HomeActivity extends AppCompatActivity
         displaySelectedScreen(R.id.nav_notes);
         toolbar.setTitle("Заметки");
 
-     //   UpdateChecker.checkForDialog(HomeActivity.this);
+        UpdateChecker.checkForDialog(HomeActivity.this);
     }
 
 
