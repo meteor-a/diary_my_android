@@ -11,10 +11,6 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @author feicien (ithcheng@gmail.com)
- * @since 2018-04-07 16:49
- */
 public class ApkUtils {
 
 

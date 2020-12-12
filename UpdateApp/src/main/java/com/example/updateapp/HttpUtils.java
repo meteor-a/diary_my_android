@@ -15,10 +15,6 @@ import java.util.Map;
 import com.example.updateapp.BuildConfig;
 
 
-/**
- * @author feicien (ithcheng@gmail.com)
- * @since 2016-07-05 19:25
- */
 public class HttpUtils {
 
 

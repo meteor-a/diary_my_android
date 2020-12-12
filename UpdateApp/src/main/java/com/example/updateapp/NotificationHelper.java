@@ -12,10 +12,6 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-/**
- * @author feicien (ithcheng@gmail.com)
- * @since 2018-04-07 16:49
- */
 public class NotificationHelper extends ContextWrapper {
 
     private NotificationManager manager;
