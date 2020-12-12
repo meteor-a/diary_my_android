@@ -47,8 +47,6 @@ public class HomeActivity extends AppCompatActivity
 
     public static String TYPE_SORT_NOTES;
     public static String TYPE_SORT_TASKS;
-    private TextView textViewName;
-    private TextView textViewEmail;
 
 
     Toolbar toolbar;
@@ -86,10 +84,10 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_notes);
 
         View headerView = navigationView.getHeaderView(0);
-        textViewName = (TextView) headerView.findViewById(R.id.textViewName);
+        TextView textViewName = (TextView) headerView.findViewById(R.id.textViewName);
         textViewName.setText(SharedPrefManager.getInstance(this).getUser().getName());
 
-        textViewEmail = (TextView) headerView.findViewById(R.id.textViewEmail);
+        TextView textViewEmail = (TextView) headerView.findViewById(R.id.textViewEmail);
         textViewEmail.setText(SharedPrefManager.getInstance(this).getUser().getEmail());
 
         //loading home fragment by default
