@@ -14,15 +14,4 @@ public class AppUtils {
         }
         return 0;
     }
-
-    public static String getVersionName(Context mContext) {
-        if (mContext != null) {
-            try {
-                return mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
-            } catch (PackageManager.NameNotFoundException ignored) {
-            }
-        }
-
-        return "";
-    }
 }

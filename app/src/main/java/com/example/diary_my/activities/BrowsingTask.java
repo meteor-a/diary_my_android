@@ -1,5 +1,6 @@
 package com.example.diary_my.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -135,6 +136,7 @@ public class BrowsingTask extends AppCompatActivity implements LoaderManager.Loa
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -180,7 +182,7 @@ public class BrowsingTask extends AppCompatActivity implements LoaderManager.Loa
 
         long user_id = SharedPrefManager.getInstance(this).getUser().getId();
         String selectQuery = "SELECT  created_ts FROM " + Contact_Database.Tasks.TABLE_NAME + " WHERE " + Contact_Database.Tasks._ID + " = " + task_id;
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectQuery, null);
         int Created_tsColumn = cursor.getColumnIndex(Contact_Database.Tasks.CREATE_TS_COLUMN);
         cursor.moveToFirst();
 
@@ -188,7 +190,7 @@ public class BrowsingTask extends AppCompatActivity implements LoaderManager.Loa
 
         call.enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                 if (!response.body().getError()) {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(Contact_Database.Tasks._ID, task_id);
@@ -201,7 +203,7 @@ public class BrowsingTask extends AppCompatActivity implements LoaderManager.Loa
             }
 
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
+            public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
                 progressDialog.dismiss();
             }
         });

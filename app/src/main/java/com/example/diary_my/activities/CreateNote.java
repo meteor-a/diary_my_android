@@ -56,7 +56,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreateNote extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, Dialog_save_note.NoticeDialogListener {
 
-    private int DIALOG_SAVE_NOTE = 1;
+    private final int DIALOG_SAVE_NOTE = 1;
 
     private TextInputEditText topicET;
     private TextInputEditText noteET;
@@ -208,6 +208,7 @@ public class CreateNote extends AppCompatActivity implements LoaderManager.Loade
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
@@ -266,7 +267,6 @@ public class CreateNote extends AppCompatActivity implements LoaderManager.Loade
                 sync.sync_new_note();
                 finish();
             } else {
-                //Log.i("dfsssssssssssssss", "dsffffffffffffffffffffffffffff");
                 getContentResolver().update(ContentUris.withAppendedId(Contact_Database.Notes.URI, noteId),
                         contentValues,
                         null,
@@ -276,7 +276,7 @@ public class CreateNote extends AppCompatActivity implements LoaderManager.Loade
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                 String selectQuery = "SELECT  created_ts, updated_ts FROM " + Contact_Database.Notes.TABLE_NAME + " WHERE " + Contact_Database.Notes._ID + " = " + noteId;
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectQuery, null);
                 cursor.moveToFirst();
                 int Create_tsColumn = cursor.getColumnIndex(Contact_Database.Notes.CREATE_TS_COLUMN);
                 int Update_tsColumn = cursor.getColumnIndex(Contact_Database.Notes.UPDATED_TS_COLUMN);

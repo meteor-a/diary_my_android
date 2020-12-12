@@ -1,20 +1,11 @@
 package com.example.diary_my.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-
-import android.content.Context;
 import android.content.Intent;
-
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.example.diary_my.R;
-
 import com.example.diary_my.helper.SharedPrefManager;
 import com.example.updateapp.UpdateChecker;
 

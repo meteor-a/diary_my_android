@@ -10,10 +10,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import com.example.updateapp.BuildConfig;
-
 
 public class HttpUtils {
 
@@ -35,7 +34,7 @@ public class HttpUtils {
                 postData.append('=');
                 postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
             }
-            byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+            byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
 
             uRLConnection = (HttpURLConnection) url.openConnection();
             uRLConnection.setRequestMethod("POST");
@@ -52,15 +51,15 @@ public class HttpUtils {
                 strBuilder.append(line);
             }
             result = strBuilder.toString();
-            String result_tmp = "";
+            StringBuilder result_tmp = new StringBuilder();
             for (int ii = 0; ii < result.length(); ++ii) {
                 if (result.charAt(ii) == '#') {
-                    result_tmp += '/';
+                    result_tmp.append('/');
                 } else {
-                    result_tmp += result.charAt(ii);
+                    result_tmp.append(result.charAt(ii));
                 }
             }
-            result = result_tmp;
+            result = result_tmp.toString();
         } catch (Exception e) {
             Log.e(Constants.TAG, "https  error");
         } finally {

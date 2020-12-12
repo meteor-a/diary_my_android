@@ -1,5 +1,6 @@
 package com.example.diary_my.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,8 +54,8 @@ import android.app.LoaderManager;
 
 public class CteateTask extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>, Dialog_save_note.NoticeDialogListener { // LoaderManager.LoaderCallbacks<Cursor>
 
-    private int DIALOG_TIME = 1;
-    private int DIALOG_SAVE_TASK = 2;
+    private final int DIALOG_TIME = 1;
+    private final int DIALOG_SAVE_TASK = 2;
     private int myHour = -1;
     private int myMinute = -1;
     private TextView setTime;
@@ -67,6 +68,7 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
     Calendar selectedDate;
 
     final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 45;
+    @SuppressLint("StaticFieldLeak")
     public  static  TimerManager timerManager;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -106,7 +108,7 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
         setData.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
-            public void onSelectedDayChange(CalendarView arg0, int year, int month,
+            public void onSelectedDayChange(@NonNull CalendarView arg0, int year, int month,
                                             int day) {
                 selectedDate.set(Calendar.YEAR, year);
                 selectedDate.set(Calendar.MONTH, month);
@@ -141,8 +143,7 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
             Date date = new Date();
             myHour = date.getHours();
             myMinute = date.getMinutes();
-            TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
-            return tpd;
+            return new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
         }
         return super.onCreateDialog(id);
     }
@@ -226,6 +227,7 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
@@ -280,7 +282,7 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                 String selectQuery = "SELECT  created_ts, updated_ts, notification_date FROM " + Contact_Database.Tasks.TABLE_NAME + " WHERE " + Contact_Database.Tasks._ID + " = " + taskId;
-                Cursor cursor = db.rawQuery(selectQuery, null);
+                @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectQuery, null);
                 cursor.moveToFirst();
                 int Create_tsColumn = cursor.getColumnIndex(Contact_Database.Tasks.CREATE_TS_COLUMN);
                 int Update_tsColumn = cursor.getColumnIndex(Contact_Database.Tasks.UPDATED_TS_COLUMN);
@@ -322,6 +324,7 @@ public class CteateTask extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     public void displayTask(Cursor cursor) throws ParseException {
         if (!cursor.moveToFirst()) {
             // Если не получилось перейти к первой строке — завершаем Activity

@@ -1,5 +1,6 @@
 package com.example.diary_my.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -59,11 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(this, HomeActivity.class));
-        } else {
-            //UpdateChecker.checkForDialog(LoginActivity.this);
         }
-
-
     }
 
     @Override
@@ -81,17 +78,12 @@ public class LoginActivity extends AppCompatActivity {
         String password = inputPassword.getText().toString();
         if (checkInput_correct(email, password)) {
             userLogin();
-        } else {
-            // надпись что то или иное поле пустое
-        }
+        }  // надпись что то или иное поле пустое
+
     }
 
     public boolean checkInput_correct(String email, String password) {
-        if (!email.isEmpty() && !password.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+        return !email.isEmpty() && !password.isEmpty();
     }
 
     private void userLogin() {
@@ -117,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                 progressDialog.dismiss();
                 if (!response.body().getError()) {
                     finish();
@@ -130,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
+            public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }

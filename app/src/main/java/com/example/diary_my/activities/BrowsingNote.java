@@ -1,5 +1,6 @@
 package com.example.diary_my.activities;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
@@ -20,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -96,6 +98,7 @@ public class BrowsingNote extends AppCompatActivity implements LoaderManager.Loa
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -135,7 +138,7 @@ public class BrowsingNote extends AppCompatActivity implements LoaderManager.Loa
 
         long user_id = SharedPrefManager.getInstance(this).getUser().getId();
         String selectQuery = "SELECT  created_ts FROM " + Contact_Database.Notes.TABLE_NAME + " WHERE " + Contact_Database.Notes._ID + " = " + noteId;
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectQuery, null);
         int Created_tsColumn = cursor.getColumnIndex(Contact_Database.Notes.CREATE_TS_COLUMN);
         cursor.moveToFirst();
 
@@ -143,7 +146,7 @@ public class BrowsingNote extends AppCompatActivity implements LoaderManager.Loa
 
         call.enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                 if (!response.body().getError()) {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(Contact_Database.Notes._ID, noteId);

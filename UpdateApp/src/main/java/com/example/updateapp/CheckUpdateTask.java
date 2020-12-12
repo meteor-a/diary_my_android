@@ -1,5 +1,6 @@
 package com.example.updateapp;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,9 +14,10 @@ import org.json.JSONObject;
 class CheckUpdateTask extends AsyncTask<Void, Void, String> {
 
     private ProgressDialog dialog;
-    private Context mContext;
-    private int mType;
-    private boolean mShowProgressDialog;
+    @SuppressLint("StaticFieldLeak")
+    private final Context mContext;
+    private final int mType;
+    private final boolean mShowProgressDialog;
     private static final String url = Constants.UPDATE_URL;
 
     CheckUpdateTask(Context context, int type, boolean showProgressDialog) {
