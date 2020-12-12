@@ -37,6 +37,7 @@ import com.example.diary_my.helper.SyncTasks;
 import com.example.diary_my.ui.notes.NotesFragment;
 import com.example.diary_my.ui.profile.ProfileFragment;
 import com.example.diary_my.ui.timemanager.TimeManagerFragment;
+import com.example.updateapp.UpdateChecker;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -94,6 +95,8 @@ public class HomeActivity extends AppCompatActivity
         //loading home fragment by default
         displaySelectedScreen(R.id.nav_notes);
         toolbar.setTitle("Заметки");
+
+     //   UpdateChecker.checkForDialog(HomeActivity.this);
     }
 
 

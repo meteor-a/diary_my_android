@@ -24,6 +24,7 @@ import com.example.diary_my.RetrofitApi.APIUrl;
 
 import com.example.diary_my.helper.SharedPrefManager;
 import com.example.diary_my.models.Result;
+import com.example.updateapp.UpdateChecker;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +59,11 @@ public class LoginActivity extends AppCompatActivity {
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(this, HomeActivity.class));
+        } else {
+            //UpdateChecker.checkForDialog(LoginActivity.this);
         }
+
+
     }
 
     @Override

@@ -1,2 +1,3 @@
+include ':UpdateApp'
 rootProject.name='diary_my'
 include ':app'

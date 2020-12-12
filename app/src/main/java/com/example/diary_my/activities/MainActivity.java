@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import com.example.diary_my.R;
 
 import com.example.diary_my.helper.SharedPrefManager;
-
+import com.example.updateapp.UpdateChecker;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+        UpdateChecker.checkForDialog(MainActivity.this);
 
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
