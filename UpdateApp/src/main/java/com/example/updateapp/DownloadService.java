@@ -28,6 +28,8 @@ public class DownloadService extends IntentService {
         String urlStr = intent.getStringExtra(Constants.APK_DOWNLOAD_URL);
         InputStream in = null;
         FileOutputStream out = null;
+
+
         try {
             URL url = new URL(urlStr);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
